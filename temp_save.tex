@@ -1,0 +1,49 @@
+\section{Linear solver for SDDM}
+\subsection{Choleksy decompositon on SDDM}
+For an SDDM matrix $S$ so $S$ is symmetric and we have that 
+$S(i,i)= \sum_{j,j\neq i} |S(i,j)|$. A Cholesky step is defined as 
+\begin{align*}
+    S^{(i}:= S^{i-1}- \frac{1}{S^{i-1}(i,i)} S^{i-1}(:,i) S^{i-1}(:,i)^T.
+\end{align*}
+Given $S^0:=S$, we can define a graph $G^{0}$, by having an undirected weighted graph, where the edge between vertices $i$ and $j$ has weight  $S^{0}(i,j)$ and we also allow self-loops but only with negative weights.   A Cholesky step on $S^{i}$ corresponds then to deleting the vertex $i$ in the graph $G^{i-1}$ and all edges incident to it.
+This holds as we have that for  
+\begin{align*}
+    \left(\frac{1}{S^{i-1}(i,i)} S^{i-1}(:,i) S^{i-1}(:,i)^T\right)(i,l)= \frac{S^{i-1}(i,i) S^{i-1}(l,i)}{S^{i-1}(i,i)} = S^{i-1}(l,i).
+\end{align*}
+
+
+Further, we change the weight the weight the edge $(j,l)$ by
+\begin{align*}
+    \frac{w(i,j) w(i,l)}{ S^{i-1}(i,i)}, 
+\end{align*} 
+as 
+\begin{align*}
+    \left(\frac{1}{S^{i-1}(i,i)} S^{i-1}(:,i) S^{i-1}(:,i)^T\right)(k,l)= \frac{S^{i-1}(k,i) S^{i-1}(l,i)}{S^{i-1}(i,i)}
+\end{align*}
+and we note that in $S^{i-1}$ the $(k,l)$ entry is $-w(k,l)$, so after the Cholesky step is $-(w(k,l)-\frac{S^{i-1}(k,i) S^{i-1}(l,i)}{S^{i-1}(i,i)}$.
+
+Note that if $\frac{w(i,j) w(i,l)}{ S^{i-1}(i,i)}$ has a different sign than the weight $w(j,l)$ in $G^{i-1}$, we add a self-loop at $j$ and at $l$ with weight $|w(j,l)-\frac{w(i,j) w(i,l)}{ S^{i-1}(i,i)}$. Additionally, if $i$ has a self-loop of weight $w(i,i)$, we add  $\frac{w(i,i)}{S(i,i)}$ weight to the self-loop of each vertex adjacent to $i$.  First assume that  $i$ has no self-loop i.e $S^{i-1}(i,i):=  \sum_{e, e\sim i} |w(e)|$, in which case we note that $\left(S^{i}-S^{i-1}\right)(k,k)= - \frac{S^{i-1}(i,k)^2}{S^{i-1}(i,i)}$. As we delete the star of $i$, we note that the sum of all other edges incident to $k$, must change by 
+\begin{align}
+\label{eq: diag}
+    - \frac{S^{i-1}(i,k)^2}{S^{i-1}(i,i)} + |S^{i-1}(i,k)|= 
+    |S^{i-1}(i,k)| \cdot (1- \frac{|S^{i-1}(i,k)|}{S^{i-1}(k,k)})= 
+   |S^{i-1}(i,j)| \sum_{j, j\neq k,i} \frac{|S^{i-1}(i,j)|}{|S^{i-1}(i,i)|}.
+\end{align}
+In order to still have that in $G^{i}$ that $S^{i}(k,k)= \sum_{e,e\sim k} |w(e)|$. We need to increase the weight of the self-loop  of $k$ by 
+\begin{align*}
+    \sum_{e=(k,l)} |w(e)| + |\frac{w(k,i) w(l,i)}{w_{S^{i-1}}(v)}|- |w(e)+ \frac{w(k,i) w(l,i)}{w_{S^{i-1}}(v)}|.
+\end{align*}
+So for a given pair of edges $(i,k), (i,l)$ we have to add the following weight to both self-loop 
+\begin{align*}
+    \begin{cases}
+        0 & \text{ if } sgn(w(k,l)= sgn(\frac{w(k,i) w(l,i)}{w_{S^{i-1}}(v)}) \\
+        2 \cdot min(|w(k,l)|, |\frac{w(k,i) w(l,i)}{w_{S^{i-1}}(v)}| & \text{ otherwise}
+    \end{cases}.
+\end{align*}
+Note that if now $i$ has already a self-loop, we see that in \ref{eq: diag}, we also obtain an additional 
+term $|w(i,k)| \cdot \frac{|w(i,i)|}{w_{S^{i-1}}(v)}$, so we need additionally increase of the self-loop by this amount. 
+\subsection{Gremban Lift}
+We can construct for any graph $G^{i}$, the associated Gremban graph $\tilde{G}^{i}$ and its Laplacian matrix $L^{i}$. While a Cholesky step on $G^{i}$, is not an intuitively process on $\tilde{G}^{i}$. But we can still understand it and understand it as a process, as adding edges and deleting edges. 
+
+If we allow $G^{i}$ to have multi-edges, (but edges with the same endpoint must have the same sign), we can split in $G^{0}$ each edge into $\rho$, each with weight  $\frac{w(e)}{\rho}$. Now note that each edge in $\tilde{G}^{0}$
+
