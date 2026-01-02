@@ -6,7 +6,7 @@ channels:
   - nodefaults
 dependencies:
   - python>=3.10 # set your python version here
-  - tensorflow-gpu
+  - tensorflow
   - numba
   - scikit-learn
   - pandas
@@ -18,7 +18,5 @@ dependencies:
   - pip
   - pip:
       # put packages to be installed by pip here
-      - deepsmiles
-      - rdkit
 # Note: prefix can be changed
 prefix: "/opt/conda"
