@@ -1,7 +1,7 @@
 # Note: name can be changed
 name: "base"
 channels:
-	# important: do not use 'defaults', but always include 'nodedefaults'
+  # important: do not use 'defaults', but always include 'nodefaults'
   - conda-forge
   - nodefaults
 dependencies:
@@ -17,8 +17,8 @@ dependencies:
   - xarray
   - pip
   - pip:
-	  # put packages to be installed by pip here
-    - deepsmiles
-    - rdkit
+      # put packages to be installed by pip here
+      - deepsmiles
+      - rdkit
 # Note: prefix can be changed
 prefix: "/opt/conda"
