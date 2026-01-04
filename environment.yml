@@ -15,9 +15,9 @@ dependencies:
   - jupyterlab
   - networkx
   - xarray
-  - igraph
   - pip
   - pip:
+    - igraph
       # put packages to be installed by pip here
 # Note: prefix can be changed
 prefix: "/opt/conda"
