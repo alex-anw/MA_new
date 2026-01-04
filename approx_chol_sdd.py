@@ -223,7 +223,7 @@ def approx_chol_sdd(S,k,epsilon, delta,c):
     G.vs['active'] = True
 
     rng = np.random.default_rng()
-
+    ci_list= []
     # Generate the permutation (indices 0 to k-1)
     # Returns a new array
     perm = rng.permutation(k)
@@ -234,7 +234,8 @@ def approx_chol_sdd(S,k,epsilon, delta,c):
             col_ci= np.zeroes(col_ci.shape[0])
         G.delete_edges(G.incident(pi))
         G.vs[2]['active'] = False
-        
-
+        clique_sample(G,pi,col_abs,col_ci, rng)
+        ci_list.append(col_ci)
+    return ci_list
 
 
