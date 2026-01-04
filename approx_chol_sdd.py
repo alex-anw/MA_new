@@ -199,7 +199,7 @@ def approx_chol_sdd(S,k,epsilon, delta,c):
     :param delta: probability parameter
     :param c: boundness of each edge
     """
-    rho= np.ceil(c * np.square(np.log(1/delta)) * np.power(epsilon,-2))
+    rho= int(np.ceil(c * np.square(np.log(1/delta)) * np.power(epsilon,-2)))
     rows, cols = np.where(S != 0)
     # Extract the specific weights for these edges
     base_weights = S[rows, cols]
