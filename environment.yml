@@ -15,6 +15,7 @@ dependencies:
   - jupyterlab
   - networkx
   - xarray
+  - igraph
   - pip
   - pip:
       # put packages to be installed by pip here
